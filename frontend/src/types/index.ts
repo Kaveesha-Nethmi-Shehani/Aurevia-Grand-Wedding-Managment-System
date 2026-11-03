@@ -23,7 +23,7 @@ export interface Package {
   name: string;
   description: string;
   price: number;
-  services: string[];
+    services: string[];
 }
 
 export interface Booking {
