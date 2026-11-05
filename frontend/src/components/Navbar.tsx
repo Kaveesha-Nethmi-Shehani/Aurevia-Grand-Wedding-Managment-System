@@ -20,7 +20,9 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           
-          {/* Logo */}
+          {
+          /* Logo */
+          }
           <Link to="/" className="flex items-center space-x-3">
             <div className="bg-amber-500 p-2 rounded-full text-slate-950">
               <Crown className="w-6 h-6" />
@@ -35,7 +37,9 @@ const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Nav Links */}
+          {
+          /* Nav Links */
+          }
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
             <Link to="/" className="hover:text-amber-400 transition">Home</Link>
             <Link to="/venues" className="hover:text-amber-400 transition">Wedding Venues</Link>
@@ -54,7 +58,9 @@ const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Auth Buttons */}
+          {
+          /* Auth Buttons */
+          }
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">

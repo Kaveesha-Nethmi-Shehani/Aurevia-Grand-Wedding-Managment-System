@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../services/api';
 import { Users, MapPin, Sparkles, Search } from 'lucide-react';
@@ -20,7 +20,7 @@ const Venues: React.FC = () => {
   const [capacityFilter, setCapacityFilter] = useState('');
   const [search, setSearch] = useState('');
 
-  // Default Luxury Venues for Presentation
+  // Luxury Venues
   const defaultVenues: Venue[] = [
     {
       _id: '65f1a2b3c4d5e6f7a8b9c0d1',
@@ -78,7 +78,9 @@ const Venues: React.FC = () => {
     <div className="bg-slate-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         
-        {/* Header */}
+        {
+        /* Header */
+        }
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold font-serif text-slate-900">
             Our Wedding Ballrooms & Halls
@@ -88,7 +90,9 @@ const Venues: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter Bar */}
+        {
+        /* Filter Bar */
+        }
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-10 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="relative w-full sm:w-72">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
@@ -117,7 +121,9 @@ const Venues: React.FC = () => {
           </div>
         </div>
 
-        {/* Venues Grid */}
+        {
+        /* Venues Grid */
+        }
         {loading ? (
           <div className="text-center py-20 text-slate-500">Loading royal venues...</div>
         ) : (

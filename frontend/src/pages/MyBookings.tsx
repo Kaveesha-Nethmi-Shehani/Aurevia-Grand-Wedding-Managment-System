@@ -32,7 +32,7 @@ const MyBookings: React.FC = () => {
     }
   };
 
-  // 🧮 සරල දින ගණනය කිරීම (Days Left Calculation)
+  // Days Calculation
   const calculateDaysLeft = (weddingDate: string) => {
     const today = new Date().getTime();
     const event = new Date(weddingDate).getTime();
@@ -41,7 +41,7 @@ const MyBookings: React.FC = () => {
     return diffDays > 0 ? diffDays : 0;
   };
 
-  // 📄 PDF Confirmation Slip Download
+  // PDF
   const handleDownloadPDF = async (bookingId: string) => {
     try {
       const response = await API.get(`/bookings/${bookingId}/pdf`, {
@@ -64,7 +64,9 @@ const MyBookings: React.FC = () => {
     <div className="bg-slate-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
         
-        {/* Header */}
+        {
+        /* Header */
+        }
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-extrabold font-serif text-slate-900">My Wedding Bookings</h1>
@@ -73,7 +75,9 @@ const MyBookings: React.FC = () => {
           
         </div>
 
-        {/* ⏳ FEATURE: සරල සහ ලස්සන Days Left Countdown Card එක */}
+        {
+
+        }
         {bookings.length > 0 && (
           <div className="bg-white rounded-2xl p-6 border-2 border-amber-500/30 shadow-md flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -90,7 +94,9 @@ const MyBookings: React.FC = () => {
               </div>
             </div>
 
-            {/* ඉතිරි දින ගණන ලොකුවට */}
+            {
+
+            }
             <div className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-center shadow-sm">
               <span className="text-2xl font-serif font-extrabold text-amber-400">
                 {calculateDaysLeft(bookings[0].weddingDate)}
@@ -100,7 +106,9 @@ const MyBookings: React.FC = () => {
           </div>
         )}
 
-        {/* Confirmed Bookings List */}
+        {
+        /* Confirmed Bookings List */
+        }
         <div>
           {loading ? (
             <div className="text-center py-20 text-slate-500">Loading your reservations...</div>
@@ -148,7 +156,9 @@ const MyBookings: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* 📄 PDF Button */}
+                    {
+                      
+                    }
                     <button
                       onClick={() => handleDownloadPDF(booking._id)}
                       className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm cursor-pointer"

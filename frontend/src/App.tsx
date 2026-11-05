@@ -25,7 +25,9 @@ const App: React.FC = () => {
         </Routes>
       </main>
 
-      {/* 🤖 Floating AI Widget */}
+      {
+        
+      }
       <AIChatBot />
 
       <Footer />
