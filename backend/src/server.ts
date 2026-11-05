@@ -27,7 +27,7 @@ app.use('/api/ai', aiRoutes);
 
 // Test Route
 app.get('/', (req: Request, res: Response) => {
-  res.send('👑 Royal Bliss Hotel & Banquets API is 100% Live & Ready!');
+  res.send('Royal Bliss Hotel & Banquets API is 100% Live & Ready!');
 });
 
 const PORT = process.env.PORT || 5000;
