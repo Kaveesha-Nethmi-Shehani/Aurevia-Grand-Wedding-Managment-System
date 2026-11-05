@@ -14,7 +14,7 @@ const AIChatBot: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'ai',
-      text: 'Hello! 💍 I am your AI Wedding Concierge for Aurevia Grand. How many guests are you expecting, or what is your budget?',
+      text: 'Hello! I am your AI Wedding Concierge for Aurevia Grand. How many guests are you expecting, or what is your budget?',
     },
   ]);
 
@@ -45,22 +45,28 @@ const AIChatBot: React.FC = () => {
   return (
     <div className="fixed bottom-6 right-6 z-50">
       
-      {/* Floating Button */}
+      {
+      /* Floating Button */
+      }
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
           className="bg-amber-500 hover:bg-amber-600 text-slate-950 px-5 py-3.5 rounded-full shadow-2xl flex items-center space-x-2 font-bold transition transform hover:scale-105 border-2 border-slate-900 cursor-pointer"
         >
-         <MessageCircle className="w-4 h-4 text-slate-950" />
+          <MessageCircle className="w-4 h-4 text-slate-950" />
           <span className="text-sm">AI Wedding Planner</span>
         </button>
       )}
 
-      {/* Chat Window */}
+      {
+
+      }
       {isOpen && (
         <div className="bg-white w-80 sm:w-96 rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col h-[460px]">
           
-          {/* Header */}
+          {
+          /* Header */
+          }
           <div className="bg-slate-900 text-white p-4 flex items-center justify-between border-b border-amber-500/30">
             <div className="flex items-center space-x-2">
               <div className="p-1.5 bg-amber-500 rounded-lg text-slate-950">
@@ -76,7 +82,9 @@ const AIChatBot: React.FC = () => {
             </button>
           </div>
 
-          {/* Messages */}
+          {
+          /* Messages */
+          }
           <div className="flex-grow p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs">
             {messages.map((msg, index) => (
               <div
@@ -101,7 +109,9 @@ const AIChatBot: React.FC = () => {
             )}
           </div>
 
-          {/* Input Box */}
+          {
+          /* Input Box */
+          }
           <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-slate-200 flex space-x-2">
             <input
               type="text"
