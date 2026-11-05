@@ -39,7 +39,7 @@ const Venues: React.FC = () => {
       description: 'Intimate and elegant, perfect for medium-sized traditional and modern wedding ceremonies.',
       capacity: 250,
       price: 220000,
-      images: ['https://images.unsplash.com/photo-1545232979-fbf68fe9f1f9?auto=format&fit=crop&q=80&w=1000'],
+      images: ['https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=1000'],
       facilities: ['Ambient Lighting', 'Sound System', 'Bridal Dressing Room', 'Dedicated Buffet Area']
     },
     {
@@ -80,10 +80,6 @@ const Venues: React.FC = () => {
         
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="inline-flex items-center space-x-2 text-amber-600 bg-amber-100 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-2">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Royal Bliss Venues</span>
-          </span>
           <h1 className="text-4xl font-extrabold font-serif text-slate-900">
             Our Wedding Ballrooms & Halls
           </h1>

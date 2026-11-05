@@ -3,18 +3,18 @@ import { User } from '../models/User';
 import { generateToken } from '../utils/generateToken';
 import { AuthRequest } from '../middleware/authMiddleware';
 
-// 1. User Registration
+// User Registration
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, phone, role } = req.body;
 
-    // Email 
+    // Email
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({ success: false, message: 'User already exists with this email' });
     }
 
-    // User 
+    // User
     const user = await User.create({
       name,
       email,
@@ -40,7 +40,7 @@ export const registerUser = async (req: Request, res: Response) => {
   }
 };
 
-// 2. User Login
+// User Login
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
@@ -72,7 +72,7 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// 3. Get Current User Profile (Protected)
+
 export const getUserProfile = async (req: AuthRequest, res: Response) => {
   try {
     const user = await User.findById(req.user?.userId).select('-password');

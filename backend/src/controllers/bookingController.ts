@@ -4,7 +4,7 @@ import { BookingStatus } from '../types/enums';
 import { AuthRequest } from '../middleware/authMiddleware';
 import { generateBookingPDF } from '../utils/genaratePdf';
 
-// 1. Check Date Availability
+// Check Date Availability
 export const checkAvailability = async (req: AuthRequest, res: Response) => {
   try {
     const { venueId, weddingDate } = req.body;
@@ -23,7 +23,7 @@ export const checkAvailability = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 2. Create Booking
+// Create Booking
 export const createBooking = async (req: AuthRequest, res: Response) => {
   try {
     const { venueId, packageId, weddingDate, guestCount, totalAmount } = req.body;
@@ -44,7 +44,7 @@ export const createBooking = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 3. Get My Bookings
+// Get my Bookings
 export const getMyBookings = async (req: AuthRequest, res: Response) => {
   try {
     const bookings = await Booking.find({ userId: req.user?.userId })
@@ -56,7 +56,7 @@ export const getMyBookings = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 4. Admin - Get All Bookings
+// Get All Bookings
 export const getAllBookings = async (req: AuthRequest, res: Response) => {
   try {
     const bookings = await Booking.find()
@@ -69,7 +69,7 @@ export const getAllBookings = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 5. Admin - Update Booking Status
+// Update Booking Status
 export const updateBookingStatus = async (req: AuthRequest, res: Response) => {
   try {
     const { status } = req.body;
@@ -84,7 +84,7 @@ export const updateBookingStatus = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// 6. Download PDF
+// Download PDF
 export const downloadPdf = async (req: AuthRequest, res: Response) => {
   try {
     const booking = await Booking.findById(req.params.id).populate('venueId');

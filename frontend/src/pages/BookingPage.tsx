@@ -31,7 +31,7 @@ const BookingPage: React.FC = () => {
   //  Check Date Availability Real-time
   const handleCheckDate = async () => {
     if (!weddingDate) {
-      alert('⚠️ Please select a wedding date first!');
+      alert('Please select a wedding date first!');
       return;
     }
 

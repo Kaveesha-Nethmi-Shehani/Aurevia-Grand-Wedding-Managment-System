@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { Venue } from '../models/Venue';
 
-// 1. Get All Venues (With Filtering by capacity & search)
+// Get All Venues 
 export const getAllVenues = async (req: Request, res: Response) => {
   try {
     const { capacity, search } = req.query;
     let query: any = {};
 
     if (capacity) {
-      query.capacity = { $gte: Number(capacity) }; // ඉල්ලන ගණනට වඩා ධාරිතාව වැඩි ඒවා
+      query.capacity = { $gte: Number(capacity) }; 
     }
     if (search) {
       query.name = { $regex: search, $options: 'i' };
@@ -21,7 +21,7 @@ export const getAllVenues = async (req: Request, res: Response) => {
   }
 };
 
-// 2. Get Single Venue by ID
+//  Get Single Venue by ID
 export const getVenueById = async (req: Request, res: Response) => {
   try {
     const venue = await Venue.findById(req.params.id);
@@ -34,7 +34,7 @@ export const getVenueById = async (req: Request, res: Response) => {
   }
 };
 
-// 3. Create Venue (Admin Only)
+// Create Venue 
 export const createVenue = async (req: Request, res: Response) => {
   try {
     const newVenue = await Venue.create(req.body);
@@ -44,7 +44,7 @@ export const createVenue = async (req: Request, res: Response) => {
   }
 };
 
-// 4. Update Venue (Admin Only)
+// Update Venue
 export const updateVenue = async (req: Request, res: Response) => {
   try {
     const updated = await Venue.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -54,7 +54,7 @@ export const updateVenue = async (req: Request, res: Response) => {
   }
 };
 
-// 5. Delete Venue (Admin Only)
+// Delete Venue 
 export const deleteVenue = async (req: Request, res: Response) => {
   try {
     await Venue.findByIdAndDelete(req.params.id);

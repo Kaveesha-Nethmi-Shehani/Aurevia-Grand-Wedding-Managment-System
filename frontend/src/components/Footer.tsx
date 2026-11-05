@@ -12,10 +12,7 @@ const Footer: React.FC = () => {
               <Crown className="w-5 h-5" />
               <span>Aurevia Grand Wedding & Banquets</span>
             </div>
-            <p className="text-sm text-slate-500">
-              Where dream weddings come to life with royalty, elegance, and unforgettable memories.
-            </p>
-          </div>
+            </div>
 
           <div>
             <h4 className="text-white font-semibold mb-3">Quick Links</h4>
@@ -35,11 +32,7 @@ const Footer: React.FC = () => {
 
         </div>
 
-        <div className="border-t border-slate-900 mt-8 pt-8 text-center text-xs text-slate-600 flex items-center justify-center space-x-1">
-          <span>&copy; {new Date().getFullYear()} Royal Bliss Hotel & Banquets. Built with</span>
-          <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" />
-          <span>for RAD Coursework.</span>
-        </div>
+        
       </div>
     </footer>
   );

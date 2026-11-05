@@ -8,10 +8,11 @@ import BookingPage from './pages/BookingPage';
 import MyBookings from './pages/MyBookings';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AIChatBot from './components/AIChatBot';
 
 const App: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="flex flex-col min-h-screen bg-slate-50 relative">
       <Navbar />
       <main className="flex-grow">
         <Routes>
@@ -23,6 +24,10 @@ const App: React.FC = () => {
           <Route path="/register" element={<Register />} />
         </Routes>
       </main>
+
+      {/* 🤖 Floating AI Widget */}
+      <AIChatBot />
+
       <Footer />
     </div>
   );

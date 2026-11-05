@@ -10,19 +10,15 @@ const Home: React.FC = () => {
       <div 
         className="relative bg-slate-900 text-white py-32 px-4 sm:px-6 lg:px-8 bg-cover bg-center"
         style={{ 
-          backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=2070')` 
+        backgroundImage: `linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=2000')` 
         }}
       >
         <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-flex items-center space-x-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-6">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>The Premier Luxury Wedding Destination</span>
-          </span>
-          <h1 className="text-4xl sm:text-6xl font-extrabold font-serif tracking-tight text-white mb-6">
+            <h1 className="text-4xl sm:text-6xl font-extrabold font-serif tracking-tight text-white mb-6">
             Where Your Royal Love Story <span className="text-amber-400">Begins</span>
           </h1>
           <p className="text-lg sm:text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
-            Experience magnificent ballrooms, enchanting outdoor gardens, and bespoke wedding packages tailored to make your special day extraordinary.
+            Book the perfect venue and custom wedding packages easily for your most memorable day
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
@@ -45,7 +41,7 @@ const Home: React.FC = () => {
       {/* 🌟 Features Section */}
       <div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold font-serif text-slate-900">Why Celebrate at Royal Bliss?</h2>
+          <h2 className="text-3xl font-bold font-serif text-slate-900">Why Celebrate at Aurevia Grand?</h2>
           <p className="text-slate-600 mt-2">Crafting timeless moments with unmatched perfection</p>
         </div>
 

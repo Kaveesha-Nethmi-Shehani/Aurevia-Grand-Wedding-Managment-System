@@ -2,8 +2,9 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import { connectDB } from './config/db';
+import aiRoutes from './routes/aiRoutes'; 
 
-// Routes Import කිරීම
+// Routes Import 
 import authRoutes from './routes/authRoutes';
 import venueRoutes from './routes/venueRoutes';
 import packageRoutes from './routes/packageRoutes';
@@ -17,11 +18,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes Mount කිරීම
+// Routes Mount 
 app.use('/api/auth', authRoutes);
 app.use('/api/venues', venueRoutes);
 app.use('/api/packages', packageRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/ai', aiRoutes); 
 
 // Test Route
 app.get('/', (req: Request, res: Response) => {
