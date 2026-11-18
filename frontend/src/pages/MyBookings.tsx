@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from '../services/api';
-import { Calendar, Users, Download, Sparkles, CheckCircle2, Clock } from 'lucide-react';
+import { Calendar, Users, Download, Sparkles, CheckCircle2, Clock, Trash2, Edit3, X, Check } from 'lucide-react';
 
 interface Booking {
   _id: string;
@@ -14,6 +14,9 @@ interface Booking {
 const MyBookings: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [editingBookingId, setEditingBookingId] = useState<string | null>(null);
+  const [editDate, setEditDate] = useState('');
+  const [editGuests, setEditGuests] = useState<number>(200);
 
   useEffect(() => {
     fetchMyBookings();
@@ -31,8 +34,7 @@ const MyBookings: React.FC = () => {
       setLoading(false);
     }
   };
-
-  // Days Calculation
+ // Spacial Feature
   const calculateDaysLeft = (weddingDate: string) => {
     const today = new Date().getTime();
     const event = new Date(weddingDate).getTime();
@@ -41,7 +43,39 @@ const MyBookings: React.FC = () => {
     return diffDays > 0 ? diffDays : 0;
   };
 
-  // PDF
+  const handleDeleteBooking = async (bookingId: string) => {
+    if (!window.confirm('Are you sure you want to cancel this wedding reservation?')) {
+      return;
+    }
+
+    try {
+      const res = await API.delete(`/bookings/my/${bookingId}`);
+      if (res.data.success) {
+        alert('Reservation cancelled successfully!');
+        setBookings(bookings.filter((b) => b._id !== bookingId));
+      }
+    } catch (error) {
+      alert('Error cancelling booking.');
+    }
+  };
+
+  const handleUpdateBooking = async (bookingId: string) => {
+    try {
+      const res = await API.put(`/bookings/my/${bookingId}`, {
+        weddingDate: editDate,
+        guestCount: editGuests,
+      });
+
+      if (res.data.success) {
+        alert('Reservation details updated successfully!');
+        setEditingBookingId(null);
+        fetchMyBookings();
+      }
+    } catch (error) {
+      alert('Error updating booking.');
+    }
+  };
+
   const handleDownloadPDF = async (bookingId: string) => {
     try {
       const response = await API.get(`/bookings/${bookingId}/pdf`, {
@@ -63,21 +97,14 @@ const MyBookings: React.FC = () => {
   return (
     <div className="bg-slate-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        
-        {
-        /* Header */
-        }
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-extrabold font-serif text-slate-900">My Wedding Bookings</h1>
-            <p className="text-sm text-slate-600 mt-1">View your reservation details and official passes</p>
+            <p className="text-sm text-slate-600 mt-1">Manage, modify, or cancel your wedding reservations</p>
           </div>
-          
+            
         </div>
 
-        {
-
-        }
         {bookings.length > 0 && (
           <div className="bg-white rounded-2xl p-6 border-2 border-amber-500/30 shadow-md flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -94,9 +121,6 @@ const MyBookings: React.FC = () => {
               </div>
             </div>
 
-            {
-
-            }
             <div className="bg-slate-900 text-white px-6 py-2.5 rounded-xl text-center shadow-sm">
               <span className="text-2xl font-serif font-extrabold text-amber-400">
                 {calculateDaysLeft(bookings[0].weddingDate)}
@@ -106,9 +130,6 @@ const MyBookings: React.FC = () => {
           </div>
         )}
 
-        {
-        /* Confirmed Bookings List */
-        }
         <div>
           {loading ? (
             <div className="text-center py-20 text-slate-500">Loading your reservations...</div>
@@ -122,8 +143,7 @@ const MyBookings: React.FC = () => {
             <div className="space-y-4">
               {bookings.map((booking) => (
                 <div key={booking._id} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                  
-                  <div className="space-y-2">
+                  <div className="space-y-2 flex-grow">
                     <div className="flex items-center space-x-2">
                       <span className="bg-emerald-100 text-emerald-800 text-xs font-extrabold px-3 py-1 rounded-full flex items-center space-x-1">
                         <CheckCircle2 className="w-3.5 h-3.5" />
@@ -136,19 +156,61 @@ const MyBookings: React.FC = () => {
                       {booking.venueId?.name || 'The Grand Bliss Ballroom'}
                     </h4>
 
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-600 pt-1">
-                      <div className="flex items-center space-x-1.5">
-                        <Calendar className="w-4 h-4 text-amber-500" />
-                        <span>Date: {new Date(booking.weddingDate).toLocaleDateString()}</span>
+                    {editingBookingId === booking._id ? (
+                      <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3 mt-2">
+                        <span className="text-xs font-bold text-amber-600 block">Edit Reservation Details:</span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="text-[11px] text-slate-500 block mb-1">New Wedding Date:</label>
+                            <input
+                              type="date"
+                              value={editDate}
+                              onChange={(e) => setEditDate(e.target.value)}
+                              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs w-full focus:outline-none focus:border-amber-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[11px] text-slate-500 block mb-1">Guest Count:</label>
+                            <input
+                              type="number"
+                              value={editGuests}
+                              onChange={(e) => setEditGuests(Number(e.target.value))}
+                              className="border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs w-full focus:outline-none focus:border-amber-500"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex space-x-2 pt-1">
+                          <button
+                            onClick={() => handleUpdateBooking(booking._id)}
+                            className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                          >
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Save Changes</span>
+                          </button>
+                          <button
+                            onClick={() => setEditingBookingId(null)}
+                            className="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center space-x-1 cursor-pointer"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                            <span>Cancel</span>
+                          </button>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-1.5">
-                        <Users className="w-4 h-4 text-amber-500" />
-                        <span>Guests: {booking.guestCount}</span>
+                    ) : (
+                      <div className="flex flex-wrap gap-4 text-sm text-slate-600 pt-1">
+                        <div className="flex items-center space-x-1.5">
+                          <Calendar className="w-4 h-4 text-amber-500" />
+                          <span>Date: {new Date(booking.weddingDate).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex items-center space-x-1.5">
+                          <Users className="w-4 h-4 text-amber-500" />
+                          <span>Guests: {booking.guestCount}</span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 w-full md:w-auto">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
                     <div>
                       <span className="text-xs text-slate-400 block">Total Reserved Cost</span>
                       <span className="text-xl font-extrabold text-slate-900 font-serif">
@@ -156,24 +218,41 @@ const MyBookings: React.FC = () => {
                       </span>
                     </div>
 
-                    {
-                      
-                    }
-                    <button
-                      onClick={() => handleDownloadPDF(booking._id)}
-                      className="inline-flex items-center space-x-2 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm cursor-pointer"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>Download PDF Slip</span>
-                    </button>
-                  </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => {
+                          setEditingBookingId(booking._id);
+                          setEditDate(new Date(booking.weddingDate).toISOString().split('T')[0]);
+                          setEditGuests(booking.guestCount);
+                        }}
+                        title="Edit Reservation"
+                        className="p-2.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-amber-500 hover:text-slate-950 transition cursor-pointer"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                      </button>
 
+                      <button
+                        onClick={() => handleDeleteBooking(booking._id)}
+                        title="Cancel Reservation"
+                        className="p-2.5 rounded-xl border border-red-200 text-red-600 hover:bg-red-600 hover:text-white transition cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+
+                      <button
+                        onClick={() => handleDownloadPDF(booking._id)}
+                        className="inline-flex items-center space-x-1.5 bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition shadow-sm cursor-pointer"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>PDF</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
           )}
         </div>
-
       </div>
     </div>
   );

@@ -8,64 +8,76 @@ export const getAIWeddingAdvice = async (req: Request, res: Response) => {
       return res.status(400).json({ success: false, message: 'Please provide a question' });
     }
 
-    const lower = prompt.toLowerCase();
+    const text = prompt.toLowerCase();
+
+  
+    const numbers = prompt.match(/\d+/g)?.map(Number) || [];
+    const guests = numbers.find((n: number) => n >= 30 && n <= 600) || 0;
 
     
-    if (lower.includes('guest') || lower.includes('people') || lower.includes('budget') || lower.includes('cost') || lower.includes('price')) {
-      const numbers = prompt.match(/\d+/g)?.map(Number) || [];
-      const guests = numbers.find((n: number) => n >= 50 && n <= 600) || 0;
-
+    if (guests > 0) {
       if (guests > 350) {
         return res.status(200).json({
           success: true,
-          answer: `For a grand gathering of ${guests} guests, our flagship "The Grand Bliss Ballroom" (Capacity: up to 450 guests, Price: Rs. 350,000) is the ultimate choice! We suggest combining it with our Premium Package (Rs. 250,000) for crystal stage decor and DJ entertainment. Total: Rs. 600,000.`,
+          answer: `For your gathering of ${guests} guests, our premier ballroom "The Grand Bliss Ballroom" (Capacity: up to 450 guests, Hall Rental: Rs. 350,000) is the only suitable luxury venue. Combined with our Premium Package (Rs. 250,000) for crystal stage decor and DJ entertainment, your total estimate will be Rs. 600,000.`,
         });
-      } else if (guests > 250 && guests <= 350) {
+      } else if (guests > 250) {
         return res.status(200).json({
           success: true,
-          answer: `For ${guests} guests, we highly recommend our "Bliss Garden Pavilion" (Outdoor lakefront lawn, capacity up to 350 guests, Rs. 280,000) or "The Grand Bliss Ballroom" (Rs. 350,000). Both provide spacious dance floors and banquet dining!`,
-        });
-      } else if (guests >= 50 && guests <= 250) {
-        return res.status(200).json({
-          success: true,
-          answer: `For an intimate wedding of ${guests} guests, "The Royal Crystal Hall" (Capacity: up to 250 guests, Price: Rs. 220,000) is your perfect match! Combined with our Silver Package (Rs. 150,000), your total reserved cost would be Rs. 370,000.`,
+          answer: `For ${guests} guests, you have two great options: 1) "Bliss Garden Pavilion" (Outdoor lakefront lawn, capacity up to 350 guests, Rs. 280,000), or 2) "The Grand Bliss Ballroom" (Indoor ballroom, Rs. 350,000). Both include dedicated banquet dining setups.`,
         });
       } else {
         return res.status(200).json({
           success: true,
-          answer: `At Aurevia Grand, hall reservations start from: 
-• The Royal Crystal Hall (up to 250 guests): Rs. 220,000
-• Bliss Garden Pavilion (Outdoor lawn, up to 350 guests): Rs. 280,000
-• The Grand Bliss Ballroom (up to 450 guests): Rs. 350,000
-
-We also offer Silver (+150k), Premium (+250k), and Royal Luxury (+400k) packages. Tell me your guest count, and I will recommend the best fit!`,
+          answer: `For ${guests} guests, "The Royal Crystal Hall" (Capacity: up to 250 guests, Hall Rental: Rs. 220,000) is the perfect fit! Paired with our Silver Package (Rs. 150,000), your total reservation comes to Rs. 370,000.`,
         });
       }
     }
 
     
-    if (lower.includes('outdoor') || lower.includes('garden') || lower.includes('lawn')) {
+    if (text.includes('budget') || text.includes('price') || text.includes('cost') || text.includes('gana') || text.includes('kiyada') || text.includes('mila')) {
       return res.status(200).json({
         success: true,
-        answer: `Yes! Our "Bliss Garden Pavilion" is an enchanting outdoor venue situated on a lakefront lawn accommodating up to 350 guests for Rs. 280,000. It features covered marquees and romantic garden lighting.`,
+        answer: `At Aurevia Grand, our venue hall pricing is as follows:
+• The Royal Crystal Hall (up to 250 guests): Rs. 220,000
+• Bliss Garden Pavilion (Outdoor lawn, up to 350 guests): Rs. 280,000
+• The Grand Bliss Ballroom (up to 450 guests): Rs. 350,000
+
+Our packages: Silver (Rs. 150,000), Premium (Rs. 250,000), and Luxury (Rs. 400,000). Tell me your guest count, and I will calculate the exact total for you!`,
       });
     }
 
     
-    if (lower.includes('package') || lower.includes('silver') || lower.includes('premium') || lower.includes('luxury')) {
+    if (text.includes('outdoor') || text.includes('garden') || text.includes('lawn') || text.includes('elimahan')) {
       return res.status(200).json({
         success: true,
-        answer: `Aurevia Grand offers three curated packages:
-1. Silver Package (Rs. 150,000): Tables, banquet chairs, entrance arch.
+        answer: `Yes! We feature the "Bliss Garden Pavilion", an enchanting open-air venue on an outdoor lakefront lawn. It accommodates up to 350 guests for Rs. 280,000, complete with covered marquees, romantic lighting, and scenic photo backdrops.`,
+      });
+    }
+
+    
+    if (text.includes('package') || text.includes('silver') || text.includes('premium') || text.includes('luxury') || text.includes('service') || text.includes('deco') || text.includes('food')) {
+      return res.status(200).json({
+        success: true,
+        answer: `We offer 3 curated wedding packages:
+1. Silver Package (Rs. 150,000): Standard table styling, banquet chairs, entrance arch.
 2. Premium Package (Rs. 250,000): Floral stage decor, DJ sound console, wash lighting.
-3. Royal Luxury Package (Rs. 400,000): Gourmet catering setup, red carpet, photo stage, and bridal suite.`,
+3. Royal Luxury Package (Rs. 400,000): Gourmet catering setup, red carpet, photo stage, and complimentary bridal suite.`,
       });
     }
 
-    
+  
+    if (text.includes('date') || text.includes('available') || text.includes('book') || text.includes('dawasa')) {
+      return res.status(200).json({
+        success: true,
+        answer: `You can check live date availability directly from our website! Simply go to "Wedding Venues", select your desired hall, pick your wedding date, and click "Check Availability" to see instant confirmation.`,
+      });
+    }
+
+ 
     return res.status(200).json({
       success: true,
-      answer: `Welcome to Aurevia Grand Hotel & Banquets! We offer 3 luxury venues: The Grand Bliss Ballroom (450 guests), The Royal Crystal Hall (250 guests), and Bliss Garden Pavilion (350 guests). How many guests are you expecting?`,
+      answer: `Hello! Welcome to Aurevia Grand Hotel & Banquets. I can assist you with venue recommendations, wedding packages, and pricing estimates. How many guests are you planning to invite?`,
     });
 
   } catch (error) {

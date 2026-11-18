@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import API from '../services/api';
-import { Users, MapPin, Sparkles, Search } from 'lucide-react';
+import { Users, MapPin, Search } from 'lucide-react';
 
 interface Venue {
   _id: string;
@@ -20,40 +20,6 @@ const Venues: React.FC = () => {
   const [capacityFilter, setCapacityFilter] = useState('');
   const [search, setSearch] = useState('');
 
-  // Luxury Venues
-  const defaultVenues: Venue[] = [
-    {
-      _id: '65f1a2b3c4d5e6f7a8b9c0d1',
-      name: 'The Grand Bliss Ballroom',
-      location: 'Grand Wing, 1st Floor',
-      description: 'Our flagship luxury ballroom featuring crystal chandeliers and a dedicated dance floor.',
-      capacity: 450,
-      price: 350000,
-      images: ['https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1000'],
-      facilities: ['Fully Air Conditioned', 'Crystal Stage Decor', 'Valet Parking', 'Changing Rooms']
-    },
-    {
-      _id: '65f1a2b3c4d5e6f7a8b9c0d2',
-      name: 'The Royal Crystal Hall',
-      location: 'Heritage Wing, 2nd Floor',
-      description: 'Intimate and elegant, perfect for medium-sized traditional and modern wedding ceremonies.',
-      capacity: 250,
-      price: 220000,
-      images: ['https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&q=80&w=1000'],
-      facilities: ['Ambient Lighting', 'Sound System', 'Bridal Dressing Room', 'Dedicated Buffet Area']
-    },
-    {
-      _id: '65f1a2b3c4d5e6f7a8b9c0d3',
-      name: 'Bliss Garden Pavilion',
-      location: 'Outdoor Lakefront Lawn',
-      description: 'A magical open-air garden venue surrounded by lush palm trees and water features.',
-      capacity: 350,
-      price: 280000,
-      images: ['https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1000'],
-      facilities: ['Garden Lighting', 'Outdoor Barbecue Area', 'Covered Marquee', 'Scenic Photo Spots']
-    }
-  ];
-
   useEffect(() => {
     fetchVenues();
   }, [capacityFilter, search]);
@@ -61,14 +27,16 @@ const Venues: React.FC = () => {
   const fetchVenues = async () => {
     try {
       setLoading(true);
-      const res = await API.get(`/venues?capacity=${capacityFilter}&search=${search}`);
-      if (res.data.success && res.data.data.length > 0) {
+      const params = new URLSearchParams();
+      if (capacityFilter) params.append('capacity', capacityFilter);
+      if (search.trim()) params.append('search', search.trim());
+
+      const res = await API.get(`/venues?${params.toString()}`);
+      if (res.data.success) {
         setVenues(res.data.data);
-      } else {
-        setVenues(defaultVenues);
       }
     } catch (error) {
-      setVenues(defaultVenues);
+      console.error('Error fetching venues:', error);
     } finally {
       setLoading(false);
     }
@@ -77,22 +45,15 @@ const Venues: React.FC = () => {
   return (
     <div className="bg-slate-50 min-h-screen py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        
-        {
-        /* Header */
-        }
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold font-serif text-slate-900">
             Our Wedding Ballrooms & Halls
           </h1>
           <p className="text-slate-600 mt-2 max-w-xl mx-auto">
-            Choose the perfect setting for your vows. Filter by capacity to match your guest list.
+            Choose the perfect setting for your vows. Filter by capacity or search by hall name.
           </p>
         </div>
 
-        {
-        /* Filter Bar */
-        }
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-10 flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="relative w-full sm:w-72">
             <Search className="w-4 h-4 text-slate-400 absolute left-3 top-3.5" />
@@ -121,17 +82,22 @@ const Venues: React.FC = () => {
           </div>
         </div>
 
-        {
-        /* Venues Grid */
-        }
         {loading ? (
           <div className="text-center py-20 text-slate-500">Loading royal venues...</div>
+        ) : venues.length === 0 ? (
+          <div className="text-center py-20 text-slate-500">No venues found matching your search.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {venues.map((venue) => (
               <div key={venue._id} className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition border border-slate-200 flex flex-col">
                 <img
-                  src={venue.images[0] || defaultVenues[0].images[0]}
+                  src={
+                    venue.name.includes('Crystal')
+                      ? 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=1000'
+                      : venue.name.includes('Garden')
+                      ? 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80&w=1000'
+                      : 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=1000'
+                  }
                   alt={venue.name}
                   className="w-full h-56 object-cover"
                 />
@@ -150,14 +116,14 @@ const Venues: React.FC = () => {
                         <span>Up to {venue.capacity} Guests</span>
                       </div>
                       <div className="flex items-center text-slate-900 font-bold">
-                        <span>Rs. {venue.price.toLocaleString()}</span>
+                        <span>Rs. {Number(venue.price).toLocaleString()}</span>
                       </div>
                     </div>
                   </div>
 
                   <Link
                     to={`/book/${venue._id}`}
-                    className="w-full text-center bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold py-3 rounded-xl transition text-sm"
+                    className="w-full text-center bg-slate-900 hover:bg-amber-500 hover:text-slate-950 text-white font-bold py-3 rounded-xl transition text-sm cursor-pointer"
                   >
                     Check Dates & Book
                   </Link>
@@ -166,7 +132,6 @@ const Venues: React.FC = () => {
             ))}
           </div>
         )}
-
       </div>
     </div>
   );

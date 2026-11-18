@@ -1,5 +1,5 @@
 import React from 'react';
-import { Crown, Heart } from 'lucide-react';
+import { Crown } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (

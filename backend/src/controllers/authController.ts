@@ -7,7 +7,7 @@ import { AuthRequest } from '../middleware/authMiddleware';
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, phone, role } = req.body;
-
+    
     // Email
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -71,7 +71,6 @@ export const loginUser = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: 'Server error during login', error });
   }
 };
-
 
 export const getUserProfile = async (req: AuthRequest, res: Response) => {
   try {

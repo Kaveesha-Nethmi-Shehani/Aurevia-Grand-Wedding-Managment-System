@@ -3,13 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/authSlice';
 import API from '../services/api';
-import { Crown, Lock, Mail, User, Phone } from 'lucide-react';
+import { Crown, Lock, Mail, User, Phone, ShieldCheck } from 'lucide-react';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
+  const [role, setRole] = useState<'CUSTOMER' | 'ADMIN'>('CUSTOMER');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ const Register: React.FC = () => {
     setError('');
 
     try {
-      const response = await API.post('/auth/register', { name, email, password, phone });
+      const response = await API.post('/auth/register', { name, email, password, phone, role });
       if (response.data.success) {
         dispatch(loginSuccess({
           user: response.data.user,
@@ -43,8 +44,8 @@ const Register: React.FC = () => {
         <div className="inline-flex p-3 bg-amber-500 rounded-full text-slate-950 mb-3 shadow-lg shadow-amber-500/30">
           <Crown className="w-8 h-8" />
         </div>
-        <h2 className="text-3xl font-extrabold text-white font-serif">Create Client Account</h2>
-        <p className="mt-2 text-sm text-slate-400">Join Royal Bliss to reserve ballrooms & packages</p>
+        <h2 className="text-3xl font-extrabold text-white font-serif">Create Account</h2>
+        <p className="mt-2 text-sm text-slate-400">Join Aurevia Grand to manage or reserve ballrooms</p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -105,6 +106,26 @@ const Register: React.FC = () => {
                   className="bg-slate-800 border border-slate-700 text-white rounded-lg block w-full pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:border-amber-500"
                   placeholder="0771234567"
                 />
+              </div>
+            </div>
+
+            {
+              
+            }
+            <div>
+              <label className="block text-sm font-medium text-slate-300">Account Type (Role)</label>
+              <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <ShieldCheck className="w-5 h-5 text-amber-500" />
+                </div>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as 'CUSTOMER' | 'ADMIN')}
+                  className="bg-slate-800 border border-slate-700 text-white rounded-lg block w-full pl-10 pr-3 py-2.5 text-sm focus:outline-none focus:border-amber-500 cursor-pointer"
+                >
+                  <option value="CUSTOMER">Wedding Client / Customer</option>
+                  <option value="ADMIN">Hotel Event Manager (Admin)</option>
+                </select>
               </div>
             </div>
 

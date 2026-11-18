@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../redux/store';
 import API from '../services/api';
-import { Calendar, Users, CheckCircle2, XCircle, Sparkles, ShieldCheck } from 'lucide-react';
+import { Calendar, Users, CheckCircle2, XCircle, Sparkles } from 'lucide-react';
 
 const BookingPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -49,7 +49,7 @@ const BookingPage: React.FC = () => {
         setAvailability('booked');
       }
     } catch (err) {
-      // Fallback
+      
       setAvailability('available');
     }
   };
@@ -78,7 +78,7 @@ const BookingPage: React.FC = () => {
     setError('');
 
     try {
-      // MongoDB ObjectId format
+      // MongoDB ObjectId 
       const validVenueId = (id && id.length === 24) ? id : '65f1a2b3c4d5e6f7a8b9c0d1';
 
       const res = await API.post('/bookings', {
@@ -104,9 +104,7 @@ const BookingPage: React.FC = () => {
       <div className="max-w-4xl mx-auto">
         
         <div className="text-center mb-8">
-          <span className="text-xs font-semibold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">
-            Step-by-Step Reservation
-          </span>
+          
           <h1 className="text-3xl font-extrabold font-serif text-slate-900 mt-2">
             Reserve Your Royal Wedding Date
           </h1>
@@ -125,7 +123,7 @@ const BookingPage: React.FC = () => {
             <form onSubmit={handleConfirmBooking} className="space-y-8">
               
               {
-              /*  Date Select & Live Check */
+            
               }
               <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
                 <label className="block text-sm font-bold text-slate-800 mb-2 flex items-center space-x-2">
@@ -156,7 +154,7 @@ const BookingPage: React.FC = () => {
                 </div>
 
                 {
-                /* Status Badges */
+                /* Status  */
                 }
                 {availability === 'checking' && (
                   <div className="mt-3 text-sm text-slate-500">Checking ballroom availability...</div>
@@ -195,11 +193,10 @@ const BookingPage: React.FC = () => {
               </div>
 
               {
-              /* 3. Package Selection */
+              /* Package Selection */
               }
               <div>
                 <label className="block text-sm font-bold text-slate-800 mb-3 flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4 text-amber-600" />
                   <span>3. Select Wedding Package</span>
                 </label>
                 
@@ -225,7 +222,7 @@ const BookingPage: React.FC = () => {
               </div>
 
               {
-              /* 4. Total & Confirm Button */
+              /* Total & Confirm Button */
               }
               <div className="border-t border-slate-200 pt-6">
                 <div className="flex justify-between items-center mb-6">
@@ -235,10 +232,7 @@ const BookingPage: React.FC = () => {
                       Rs. {totalAmount.toLocaleString()}
                     </span>
                   </div>
-                  <div className="text-xs text-emerald-600 flex items-center space-x-1">
-                    <ShieldCheck className="w-4 h-4" />
-                    <span>Free Date Rescheduling</span>
-                  </div>
+                  
                 </div>
 
                 <button

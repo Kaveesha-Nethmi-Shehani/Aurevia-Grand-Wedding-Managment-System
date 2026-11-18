@@ -4,7 +4,6 @@ import { BookingStatus } from '../types/enums';
 import { AuthRequest } from '../middleware/authMiddleware';
 import { generateBookingPDF } from '../utils/genaratePdf';
 
-// Check Date Availability
 export const checkAvailability = async (req: AuthRequest, res: Response) => {
   try {
     const { venueId, weddingDate } = req.body;
@@ -56,7 +55,46 @@ export const getMyBookings = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Get All Bookings
+// Update Booking (User)
+export const updateMyBooking = async (req: AuthRequest, res: Response) => {
+  try {
+    const { weddingDate, guestCount } = req.body;
+    const booking = await Booking.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user?.userId },
+      { weddingDate: new Date(weddingDate), guestCount },
+      { new: true }
+    );
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Reservation updated successfully', data: booking });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Error updating reservation', error });
+  }
+};
+
+
+// Cancel Booking (User)
+export const cancelBooking = async (req: AuthRequest, res: Response) => {
+  try {
+    const booking = await Booking.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user?.userId,
+    });
+
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+
+    return res.status(200).json({ success: true, message: 'Reservation cancelled successfully' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: 'Error cancelling reservation', error });
+  }
+};
+
+// Get All Bookings (Admin)
 export const getAllBookings = async (req: AuthRequest, res: Response) => {
   try {
     const bookings = await Booking.find()
@@ -69,7 +107,7 @@ export const getAllBookings = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Update Booking Status
+// Update Booking Status (Admin)
 export const updateBookingStatus = async (req: AuthRequest, res: Response) => {
   try {
     const { status } = req.body;
@@ -80,11 +118,11 @@ export const updateBookingStatus = async (req: AuthRequest, res: Response) => {
     );
     return res.status(200).json({ success: true, message: 'Status updated', data: booking });
   } catch (error) {
-    return res.status(500).json({ success: false, message: 'Server error', error });
+    return res.status(500).json({ success: false, message: 'Error updating status', error });
   }
 };
 
-// Download PDF
+// Download Booking PDF
 export const downloadPdf = async (req: AuthRequest, res: Response) => {
   try {
     const booking = await Booking.findById(req.params.id).populate('venueId');
@@ -93,6 +131,6 @@ export const downloadPdf = async (req: AuthRequest, res: Response) => {
     }
     generateBookingPDF(booking, res);
   } catch (error) {
-    return res.status(500).json({ success: false, message: 'Server error', error });
+    return res.status(500).json({ success: false, message: 'Error generating PDF', error });
   }
 };

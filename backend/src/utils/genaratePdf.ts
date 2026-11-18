@@ -9,22 +9,18 @@ export const generateBookingPDF = (booking: any, res: Response) => {
 
   doc.pipe(res);
 
-  // Header 
   doc.fontSize(22).font('Helvetica-Bold').text('AUREVIA GRAND HOTEL & BANQUETS', { align: 'center' });
   doc.fontSize(12).font('Helvetica').text('Official Wedding Venue Reservation Slip', { align: 'center' });
   doc.moveDown();
 
-  
   doc.strokeColor('#d97706').lineWidth(2).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(1.5);
 
-  // Booking
   doc.fontSize(11).font('Helvetica-Bold').text(`Booking Reference ID: `, { continued: true }).font('Helvetica').text(`${booking._id}`);
   doc.fontSize(11).font('Helvetica-Bold').text(`Reservation Status: `, { continued: true }).font('Helvetica').text(`${booking.bookingStatus.toUpperCase()}`);
   doc.fontSize(11).font('Helvetica-Bold').text(`Issued Date: `, { continued: true }).font('Helvetica').text(`${new Date().toLocaleDateString()}`);
   doc.moveDown(1.5);
 
-  // Event Details
   doc.fontSize(14).font('Helvetica-Bold').text('Event & Venue Information');
   doc.strokeColor('#e2e8f0').lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(0.8);
@@ -42,17 +38,15 @@ export const generateBookingPDF = (booking: any, res: Response) => {
     .font('Helvetica').text(`${booking.packageId?.name || 'Custom Wedding Package'}`);
   doc.moveDown(1.5);
 
-  //  Financial
   doc.fontSize(14).font('Helvetica-Bold').text('Payment & Billing Details');
   doc.strokeColor('#e2e8f0').lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(0.8);
 
   doc.fontSize(13).font('Helvetica-Bold').text(`Total Amount: `, { continued: true })
-  .fillColor('#d97706').text(`Rs. ${Number(booking.totalAmount).toLocaleString()}`);
-  doc.fillColor('#000000'); // Reset color
+    .fillColor('#d97706').text(`Rs. ${Number(booking.totalAmount).toLocaleString()}`);
+  doc.fillColor('#000000');
   doc.moveDown(2);
 
-  //  Footer & Instructions
   doc.strokeColor('#d97706').lineWidth(1).moveTo(50, doc.y).lineTo(550, doc.y).stroke();
   doc.moveDown(1);
   doc.fontSize(10).font('Helvetica-Oblique').text('Please present this official slip to the Aurevia Grand Events Desk upon arrival.', { align: 'center' });
@@ -60,5 +54,3 @@ export const generateBookingPDF = (booking: any, res: Response) => {
 
   doc.end();
 };
-
-export default generateBookingPDF;
